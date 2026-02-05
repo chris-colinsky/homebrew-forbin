@@ -1,8 +1,8 @@
 class Forbin < Formula
   desc "Interactive CLI tool for testing remote MCP (Model Context Protocol) servers"
   homepage "https://github.com/chris-colinsky/Forbin"
-  url "https://files.pythonhosted.org/packages/77/86/2dcaf32b40f95dcbea9940513bd33c62b564e2f523238112f4de24bb9c0e/forbin_mcp-0.1.0.tar.gz"
-  sha256 "2d92fbdab6e9dd517edab8368c7e35acf1319fe45f50f0e0594986adee2fdbcc"
+  url "https://files.pythonhosted.org/packages/ae/7f/e7daff79e6b470ff6fe7bfe65e392f4d5aaccf0a1ab4d5da446ee028566b/forbin_mcp-0.1.1.tar.gz"
+  sha256 "e54e9e47c2cc711f19774d97e2dba1741c1aee919c8232c527d7bd74d0daa131"
   license "MIT"
 
   depends_on "python@3.13"
@@ -14,7 +14,7 @@ class Forbin < Formula
 
     system python, "-m", "venv", libexec
     system libexec/"bin/pip", "install", "--upgrade", "pip"
-    system libexec/"bin/pip", "install", "forbin-mcp==0.1.0"
+    system libexec/"bin/pip", "install", "forbin-mcp==0.1.1"
 
     (bin/"forbin").write <<~EOS
       #!/bin/bash

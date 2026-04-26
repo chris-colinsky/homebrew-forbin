@@ -17,7 +17,7 @@ jobs:
         os: [macos-26, macos-15]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: Homebrew/actions/setup-homebrew@main
 
@@ -52,7 +52,7 @@ jobs:
           ls -la *.bottle* 2>/dev/null || echo "No .bottle files found in $(pwd)"
 
       - name: Upload bottle artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: bottles-${{ matrix.os }}
           path: |
@@ -67,12 +67,12 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: main
 
       - name: Download all bottles
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           merge-multiple: true
           path: bottles/
@@ -95,7 +95,7 @@ jobs:
           ls *.bottle*.tar.gz 2>/dev/null || echo "No bottle tarballs found"
 
       - name: Create release and upload bottles
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: forbin-${{ steps.meta.outputs.version }}
           name: "Bottles for forbin ${{ steps.meta.outputs.version }}"

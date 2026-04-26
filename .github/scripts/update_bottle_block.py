@@ -7,10 +7,12 @@ import sys
 from pathlib import Path
 
 TAG_ORDER = [
+    "arm64_tahoe",
     "arm64_sequoia",
     "arm64_sonoma",
     "arm64_ventura",
     "arm64_monterey",
+    "tahoe",
     "sequoia",
     "sonoma",
     "ventura",

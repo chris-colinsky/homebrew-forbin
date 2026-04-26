@@ -5,6 +5,13 @@ class Forbin < Formula
   sha256 "923c3998eace47b68a4d2893a7eabfaf7c580ad9beb9170503d69c298781db28"
   license "MIT"
 
+  bottle do
+    rebuild 1
+    root_url "https://github.com/chris-colinsky/homebrew-forbin/releases/download/forbin-0.1.2"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "24566e43f5a79a3b7bb4412368fded9b794a058e3eabf356da2ffa0f20413f0a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "34cc67e50fa6c56dcd4fc4a251a0aa08a8b348d1f838cbbd8fcc426ce8e75667"
+  end
+
   depends_on "python@3.13"
   depends_on "rust" => :build
 

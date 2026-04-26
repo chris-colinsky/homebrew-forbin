@@ -6,15 +6,24 @@ class Forbin < Formula
   license "MIT"
 
   depends_on "python@3.13"
+  depends_on "rust" => :build
 
   skip_clean "libexec"
 
   def install
     python = Formula["python@3.13"].opt_bin/"python3.13"
 
+    # The pydantic-core Rust extension wheel ships without
+    # -headerpad_max_install_names, so Homebrew's post-install relocation step
+    # fails trying to rewrite its @rpath dylib ID to a long absolute path.
+    # Building it from source with this linker flag resolves the issue.
+    ENV.append "RUSTFLAGS", "-C link-arg=-headerpad_max_install_names"
+
     system python, "-m", "venv", libexec
     system libexec/"bin/pip", "install", "--upgrade", "pip"
-    system libexec/"bin/pip", "install", "forbin-mcp==0.1.2"
+    system libexec/"bin/pip", "install",
+           "--no-binary", "pydantic-core",
+           "forbin-mcp==0.1.2"
 
     (bin/"forbin").write <<~EOS
       #!/bin/bash

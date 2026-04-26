@@ -6,10 +6,10 @@ class Forbin < Formula
   license "MIT"
 
   bottle do
-    rebuild 1
+    rebuild 2
     root_url "https://github.com/chris-colinsky/homebrew-forbin/releases/download/forbin-0.1.2"
-    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "24566e43f5a79a3b7bb4412368fded9b794a058e3eabf356da2ffa0f20413f0a"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "34cc67e50fa6c56dcd4fc4a251a0aa08a8b348d1f838cbbd8fcc426ce8e75667"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "4ad50557398d9abf7890610393e68d2c5c4323b19a0ff37a83c3474b74d3e1c0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7d3d6b8b50e5c10c0b2f84087d3961b0456d6304f9fd3a725b9c90e1bc114cf4"
   end
 
   depends_on "python@3.13"

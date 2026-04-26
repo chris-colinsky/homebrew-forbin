@@ -13,16 +13,18 @@ class Forbin < Formula
   def install
     python = Formula["python@3.13"].opt_bin/"python3.13"
 
-    # Several Rust extension wheels (cryptography, pydantic-core, rpds-py) ship
-    # without -headerpad_max_install_names, so Homebrew's post-install relocation
-    # step fails trying to rewrite their @rpath dylib IDs to long absolute paths.
-    # Building them from source with this linker flag resolves the issue.
+    # Several Rust extension wheels in the dep tree (cryptography, pydantic-core,
+    # rpds-py, watchfiles, ...) ship without -headerpad_max_install_names, so
+    # Homebrew's post-install relocation step fails trying to rewrite their
+    # @rpath dylib IDs to long absolute paths. --no-binary :all: forces every
+    # wheel to be built from source so this RUSTFLAGS linker flag applies to
+    # every Rust extension regardless of which transitive dep introduced it.
     ENV.append "RUSTFLAGS", "-C link-arg=-headerpad_max_install_names"
 
     system python, "-m", "venv", libexec
     system libexec/"bin/pip", "install", "--upgrade", "pip"
     system libexec/"bin/pip", "install",
-           "--no-binary", "cryptography,pydantic-core,rpds-py",
+           "--no-binary", ":all:",
            "forbin-mcp==0.1.2"
 
     (bin/"forbin").write <<~EOS

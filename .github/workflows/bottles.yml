@@ -39,6 +39,29 @@ jobs:
           "
           cp Formula/forbin.rb "$(brew --repo chris-colinsky/forbin)/Formula/forbin.rb" || true
 
+      - name: Wait for forbin-mcp to appear on PyPI
+        # Guards against a CDN propagation race: release.yml in the source
+        # repo pushes the formula update as soon as PyPI's JSON API confirms
+        # the new version, but the simple index (which pip queries) sometimes
+        # lags by a few minutes. Without this poll, `brew install` below
+        # fails with "Could not find a version that satisfies the
+        # requirement forbin-mcp==X.Y.Z" even though the JSON API already
+        # shows it.
+        run: |
+          VERSION="${{ steps.meta.outputs.version }}"
+          SIMPLE_URL="https://pypi.org/simple/forbin-mcp/"
+          echo "Polling $SIMPLE_URL for forbin-mcp==$VERSION ..."
+          for i in $(seq 1 30); do
+            if curl -fsSL "$SIMPLE_URL" | grep -q "forbin_mcp-${VERSION}\."; then
+              echo "Found forbin-mcp==$VERSION on simple index after ~$((i * 5))s"
+              exit 0
+            fi
+            echo "Attempt $i/30: not yet — sleeping 5s"
+            sleep 5
+          done
+          echo "::error::forbin-mcp==$VERSION did not appear on the PyPI simple index after 150s"
+          exit 1
+
       - name: Install for bottling
         run: brew install --build-bottle chris-colinsky/forbin/forbin
 

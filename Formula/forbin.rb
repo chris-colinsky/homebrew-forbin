@@ -1,16 +1,9 @@
 class Forbin < Formula
   desc "Interactive CLI tool for testing remote MCP (Model Context Protocol) servers"
   homepage "https://github.com/chris-colinsky/Forbin"
-  url "https://files.pythonhosted.org/packages/dc/ab/4ab7d62fc91bb50d15b036aa310ea34d3e2fa8cb6d14f64c8d3b6e7ea631/forbin_mcp-0.1.2.tar.gz"
-  sha256 "923c3998eace47b68a4d2893a7eabfaf7c580ad9beb9170503d69c298781db28"
+  url "https://files.pythonhosted.org/packages/ab/fe/2916093adf533a28afc6dbb4708eddfae508f01ef84935fa7cc2216f1c09/forbin_mcp-0.1.3.tar.gz"
+  sha256 "55335da812f1d0c93785f690dd8dd93a36e91fa46aeaef8350d0b72ce700de1b"
   license "MIT"
-
-  bottle do
-    rebuild 2
-    root_url "https://github.com/chris-colinsky/homebrew-forbin/releases/download/forbin-0.1.2"
-    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "4ad50557398d9abf7890610393e68d2c5c4323b19a0ff37a83c3474b74d3e1c0"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7d3d6b8b50e5c10c0b2f84087d3961b0456d6304f9fd3a725b9c90e1bc114cf4"
-  end
 
   depends_on "python@3.13"
   depends_on "rust" => :build
@@ -32,7 +25,7 @@ class Forbin < Formula
     system libexec/"bin/pip", "install", "--upgrade", "pip"
     system libexec/"bin/pip", "install",
            "--no-binary", ":all:",
-           "forbin-mcp==0.1.2"
+           "forbin-mcp==0.1.3"
 
     (bin/"forbin").write <<~EOS
       #!/bin/bash

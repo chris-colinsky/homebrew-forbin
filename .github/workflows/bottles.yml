@@ -7,6 +7,15 @@ on:
       - Formula/forbin-mcp.rb
   workflow_dispatch:
 
+# Default to read-only for the workflow so individual jobs have to opt in
+# to anything more, satisfying CodeQL's least-privilege check on
+# GITHUB_TOKEN scope. The build job only needs to read the repo and upload
+# artifacts (which uses its own scoped token), so the default is enough.
+# The publish job below overrides with contents: write to push the bottle
+# block update and create a GitHub Release.
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build bottle on ${{ matrix.os }}

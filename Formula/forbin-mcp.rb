@@ -5,6 +5,13 @@ class ForbinMcp < Formula
   sha256 "0667f75e355e8cb82a3d43bd3a4ed869b3abe9629af4786ab263c3c6d00e81c1"
   license "MIT"
 
+  bottle do
+    rebuild 1
+    root_url "https://github.com/chris-colinsky/homebrew-forbin-mcp/releases/download/forbin-mcp-0.1.4"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8ac9b73033d5880ac85734319f50f465439608c6ee367d8a31eac67a69b27e4b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "05abf375118c1e7d5ebbda0c2295f4f7cd52fce89474adaa1a29e0ee1b76a365"
+  end
+
   depends_on "python@3.13"
   depends_on "rust" => :build
 

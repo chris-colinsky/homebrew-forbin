@@ -6,10 +6,10 @@ class ForbinMcp < Formula
   license "MIT"
 
   bottle do
-    rebuild 1
-    root_url "https://github.com/chris-colinsky/homebrew-forbin/releases/download/forbin-0.1.3"
-    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "09241bc351123f0e5cd2c65ac56b0b31283dc5568e161e8a47c3990495e1dffc"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "607e664c02865e94437680ae3ee2467f6c4a855dff6975e3bb18bc2c78f34e03"
+    rebuild 2
+    root_url "https://github.com/chris-colinsky/homebrew-forbin-mcp/releases/download/forbin-mcp-0.1.3"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8e77f1f53f15bb214d7b33ef1a1e3bf432cfbd11f85313ea4920dd197a05984f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a1e3bc6792d9a46a2217cbeb7c897473e005554129825a12c5b589044b1986b0"
   end
 
   depends_on "python@3.13"

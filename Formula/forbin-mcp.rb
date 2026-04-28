@@ -1,6 +1,6 @@
-class Forbin < Formula
+class ForbinMcp < Formula
   desc "Interactive CLI tool for testing remote MCP (Model Context Protocol) servers"
-  homepage "https://github.com/chris-colinsky/Forbin"
+  homepage "https://github.com/chris-colinsky/forbin-mcp"
   url "https://files.pythonhosted.org/packages/ab/fe/2916093adf533a28afc6dbb4708eddfae508f01ef84935fa7cc2216f1c09/forbin_mcp-0.1.3.tar.gz"
   sha256 "55335da812f1d0c93785f690dd8dd93a36e91fa46aeaef8350d0b72ce700de1b"
   license "MIT"

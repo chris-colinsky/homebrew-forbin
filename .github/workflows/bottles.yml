@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - Formula/forbin.rb
+      - Formula/forbin-mcp.rb
   workflow_dispatch:
 
 jobs:
@@ -24,20 +24,20 @@ jobs:
       - name: Extract version and root URL
         id: meta
         run: |
-          VERSION=$(python3 -c "import re; print(re.search(r'forbin_mcp-(\d+\.\d+\.\d+)\.tar\.gz', open('Formula/forbin.rb').read()).group(1))")
+          VERSION=$(python3 -c "import re; print(re.search(r'forbin_mcp-(\d+\.\d+\.\d+)\.tar\.gz', open('Formula/forbin-mcp.rb').read()).group(1))")
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "root_url=https://github.com/${{ github.repository }}/releases/download/forbin-$VERSION" >> "$GITHUB_OUTPUT"
+          echo "root_url=https://github.com/${{ github.repository }}/releases/download/forbin-mcp-$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Strip bottle block from formula before building
         run: |
           python3 -c "
           import re
-          path = 'Formula/forbin.rb'
+          path = 'Formula/forbin-mcp.rb'
           formula = open(path).read()
           formula = re.sub(r'\n  bottle do\n(?:.*\n)*?  end\n', '\n', formula)
           open(path, 'w').write(formula)
           "
-          cp Formula/forbin.rb "$(brew --repo chris-colinsky/forbin)/Formula/forbin.rb" || true
+          cp Formula/forbin-mcp.rb "$(brew --repo chris-colinsky/forbin-mcp)/Formula/forbin-mcp.rb" || true
 
       - name: Wait for forbin-mcp to appear on PyPI
         # Guards against a CDN propagation race: release.yml in the source
@@ -63,14 +63,14 @@ jobs:
           exit 1
 
       - name: Install for bottling
-        run: brew install --build-bottle chris-colinsky/forbin/forbin
+        run: brew install --build-bottle chris-colinsky/forbin-mcp/forbin-mcp
 
       - name: Create bottle
         run: |
           brew bottle \
             --json \
             --root-url="${{ steps.meta.outputs.root_url }}" \
-            chris-colinsky/forbin/forbin
+            chris-colinsky/forbin-mcp/forbin-mcp
           echo "--- Bottle files created ---"
           ls -la *.bottle* 2>/dev/null || echo "No .bottle files found in $(pwd)"
 
@@ -103,7 +103,7 @@ jobs:
       - name: Extract version
         id: meta
         run: |
-          VERSION=$(python3 -c "import re; print(re.search(r'forbin_mcp-(\d+\.\d+\.\d+)\.tar\.gz', open('Formula/forbin.rb').read()).group(1))")
+          VERSION=$(python3 -c "import re; print(re.search(r'forbin_mcp-(\d+\.\d+\.\d+)\.tar\.gz', open('Formula/forbin-mcp.rb').read()).group(1))")
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Rename bottles for download URL compatibility
@@ -120,21 +120,21 @@ jobs:
       - name: Create release and upload bottles
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: forbin-${{ steps.meta.outputs.version }}
-          name: "Bottles for forbin ${{ steps.meta.outputs.version }}"
+          tag_name: forbin-mcp-${{ steps.meta.outputs.version }}
+          name: "Bottles for forbin-mcp ${{ steps.meta.outputs.version }}"
           files: bottles/*.bottle*.tar.gz
           make_latest: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update formula with bottle block
-        run: python3 .github/scripts/update_bottle_block.py bottles/ Formula/forbin.rb
+        run: python3 .github/scripts/update_bottle_block.py bottles/ Formula/forbin-mcp.rb
 
       - name: Commit updated formula
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add Formula/forbin.rb
+          git add Formula/forbin-mcp.rb
           git diff --staged --quiet && echo "No changes to commit" && exit 0
           git commit -m "bottles: add ${{ steps.meta.outputs.version }} [skip ci]"
           git pull --rebase origin main
